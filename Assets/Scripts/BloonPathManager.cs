@@ -28,14 +28,6 @@ public class BloonPathManager : MonoBehaviour
 
     public Wave wave;
 
-    private void Start()
-    {
-        foreach (Bloon bloon in bloons)
-        {
-            bloon.TargetIndex = Random.Range(0, pathPoints.Length);
-        }
-    }
-
     private void FixedUpdate()
     {
         SpawnWaves();
@@ -52,32 +44,35 @@ public class BloonPathManager : MonoBehaviour
             time = wave.spawnDelay;
             wave.waveStarted = true;
         }
-        while(bloonsToSpawn > 0)
+
+        if (bloonsToSpawn <= 0) return;
+            
+        time -= Time.deltaTime;
+
+        if(time <= 0)
         {
-            time -= Time.deltaTime;
+            Bloon newBloon = Instantiate(wave.type, pathPoints[0].position, Quaternion.identity);
+            bloons.Add(newBloon);
 
-           if(time <= 0)
-            {
-                Bloon newBloon = Instantiate(wave.type, pathPoints[0].position, Quaternion.identity);
-                bloons.Add(newBloon);
-
-                bloonsToSpawn--;
-                time = wave.spawnDelay;
-            }
+            bloonsToSpawn--;
+            time = wave.spawnDelay;
         }
+        
     }
 
     private void HandleBloons()
     {
         foreach (Bloon bloon in bloons)
         {
+
+            if (!bloon.gameObject.activeInHierarchy) continue;
+
             // if you are close to the current target
             if (Vector3.Distance(pathPoints[bloon.TargetIndex].position, bloon.GetPosition()) < 0.5f)
             {
                 if (bloon.TargetIndex == pathPoints.Length - 1)
                 {
-                    Destroy(bloon.gameObject);
-                    bloons.Remove(bloon);
+                    bloon.gameObject.SetActive(false);
                     continue;
                 }
                 SetNewTarget(bloon);
@@ -100,7 +95,7 @@ public class BloonPathManager : MonoBehaviour
         {
             case PatrolType.StartToEnd:
                 if(bloon.TargetIndex < pathPoints.Length - 1)
-                    bloon.TargetIndex = bloon.TargetIndex++;
+                    bloon.TargetIndex++;
                 break;
 
             case PatrolType.ClockWise:

@@ -15,7 +15,7 @@ public class Bloon : MonoBehaviour
         set { targetIndex = value; }
     }
 
-    public Vector3 GetPosition(){ return transform.position; }
+    public Vector3 GetPosition(){ return gameObject.transform.position; }
     public void SetPosition(Vector3 newPosition){ transform.position = newPosition; }
 
 
