@@ -1483,11 +1483,19 @@ MonoBehaviour:
   - {fileID: 1936954743}
   patrolType: 0
   bloons: []
-  wave:
-    quantity: 5
+  waves:
+  - quantity: 5
     type: {fileID: 6045396046411445925, guid: 38c1c41a41c20f347bd0bca245bfe5c2, type: 3}
     spawnDelay: 1
-    waveStarted: 0
+    blockNextWave: 0
+  - quantity: 5
+    type: {fileID: 6045396046411445925, guid: 226a08da89483f146bcf44d8b064b41e, type: 3}
+    spawnDelay: 1.5
+    blockNextWave: 1
+  - quantity: 5
+    type: {fileID: 6045396046411445925, guid: 6614cc11a43646c4eaa06b4c6e0cba52, type: 3}
+    spawnDelay: 2
+    blockNextWave: 1
 --- !u!4 &1349685120
 Transform:
   m_ObjectHideFlags: 0

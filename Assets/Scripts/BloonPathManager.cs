@@ -11,7 +11,23 @@ public class BloonPathManager : MonoBehaviour
         public float quantity;
         public Bloon type;
         public float spawnDelay;
-        public bool waveStarted;
+        public bool blockNextWave;
+    }
+
+    public struct WaveTimer
+    {
+        public float _quantityToSpawn;
+        public float time;
+        public int index;
+        public bool _waveStarted;
+
+        public WaveTimer(float quantity, float time, int index = 0, bool waveStarted = false)
+        {
+            _quantityToSpawn = quantity;
+            this.time = time;
+            this.index = index;
+            _waveStarted = waveStarted;
+        }
     }
 
     public enum PatrolType
@@ -26,7 +42,7 @@ public class BloonPathManager : MonoBehaviour
 
     public List<Bloon> bloons;
 
-    public Wave wave;
+    public List<Wave> waves = new List<Wave>();
 
     private void FixedUpdate()
     {
@@ -34,29 +50,40 @@ public class BloonPathManager : MonoBehaviour
         HandleBloons();
     }
 
-    float bloonsToSpawn = 0;
-    float time = 0;
+    List<WaveTimer> waveTimers = new List<WaveTimer>();
+
     private void SpawnWaves()
     {
-        if(wave.waveStarted == false)
-        {
-            bloonsToSpawn = wave.quantity;
-            time = wave.spawnDelay;
-            wave.waveStarted = true;
-        }
+        waveTimers.Add(new WaveTimer(waves[0].quantity, waves[0].spawnDelay));
 
-        if (bloonsToSpawn <= 0) return;
+        //if(!waveStarted)
+        //{
+        //    bloonsToSpawn = waves[index].quantity;
+        //    time = waves[index].spawnDelay;
+        //    waveStarted = true;
+        //}
+
+        //if (bloonsToSpawn <= 0)
+        //{
+        //    //se avete spawnato tutte le wave 
+        //    if(index >= waves.Count - 1)
+        //        return;
+
+        //    //altrimenti fai partire la prossima;
+        //    index++;
+        //    waveStarted = false;
+        //}; 
             
-        time -= Time.deltaTime;
+        //time -= Time.deltaTime;
 
-        if(time <= 0)
-        {
-            Bloon newBloon = Instantiate(wave.type, pathPoints[0].position, Quaternion.identity);
-            bloons.Add(newBloon);
+        //if(time <= 0)
+        //{
+        //    Bloon newBloon = Instantiate(waves[index].type, pathPoints[0].position, Quaternion.identity);
+        //    bloons.Add(newBloon);
 
-            bloonsToSpawn--;
-            time = wave.spawnDelay;
-        }
+        //    bloonsToSpawn--;
+        //    time = waves[index].spawnDelay;
+        //}
         
     }
 
