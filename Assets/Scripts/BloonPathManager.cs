@@ -4,8 +4,19 @@ using UnityEngine;
 
 public class BloonPathManager : MonoBehaviour
 {
+
+    [System.Serializable]
+    public struct Wave
+    {
+        public float quantity;
+        public Bloon type;
+        public float spawnDelay;
+        public bool waveStarted;
+    }
+
     public enum PatrolType
     {
+        StartToEnd,
         ClockWise,
         CounterClockwise
     }
@@ -13,7 +24,9 @@ public class BloonPathManager : MonoBehaviour
     public Transform[] pathPoints;
     public PatrolType patrolType;
 
-    public Bloon[] bloons;
+    public List<Bloon> bloons;
+
+    public Wave wave;
 
     private void Start()
     {
@@ -25,40 +38,82 @@ public class BloonPathManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        for (int i = 0; i < bloons.Length; i++)
+        SpawnWaves();
+        HandleBloons();
+    }
+
+    float bloonsToSpawn = 0;
+    float time = 0;
+    private void SpawnWaves()
+    {
+        if(wave.waveStarted == false)
         {
-            SetNewTarget(i);
-            MoveTowardsTarget(i);
+            bloonsToSpawn = wave.quantity;
+            time = wave.spawnDelay;
+            wave.waveStarted = true;
+        }
+        while(bloonsToSpawn > 0)
+        {
+            time -= Time.deltaTime;
+
+           if(time <= 0)
+            {
+                Bloon newBloon = Instantiate(wave.type, pathPoints[0].position, Quaternion.identity);
+                bloons.Add(newBloon);
+
+                bloonsToSpawn--;
+                time = wave.spawnDelay;
+            }
         }
     }
 
-    private void MoveTowardsTarget(int index)
+    private void HandleBloons()
     {
-        // move towards target
-        Vector3 newPosition = Vector3.MoveTowards(bloons[index].GetPosition(), pathPoints[bloons[index].TargetIndex].position, bloons[index].speed * Time.deltaTime);
-        bloons[index].SetPosition(newPosition);
+        foreach (Bloon bloon in bloons)
+        {
+            // if you are close to the current target
+            if (Vector3.Distance(pathPoints[bloon.TargetIndex].position, bloon.GetPosition()) < 0.5f)
+            {
+                if (bloon.TargetIndex == pathPoints.Length - 1)
+                {
+                    Destroy(bloon.gameObject);
+                    bloons.Remove(bloon);
+                    continue;
+                }
+                SetNewTarget(bloon);
+            }
+            MoveTowardsTarget(bloon);
+        }
     }
 
-    private void SetNewTarget(int index)
+    private void MoveTowardsTarget(Bloon bloon)
     {
-        // if you are close to the current target
-        if (Vector3.Distance(pathPoints[bloons[index].TargetIndex].position, bloons[index].GetPosition()) > 0.5f) return;
+        // move towards target
+        Vector3 newPosition = Vector3.MoveTowards(bloon.GetPosition(), pathPoints[bloon.TargetIndex].position, bloon.speed * Time.deltaTime);
+        bloon.SetPosition(newPosition);
+    }
 
+    private void SetNewTarget(Bloon bloon)
+    {
         // get a new target
         switch (patrolType)
         {
+            case PatrolType.StartToEnd:
+                if(bloon.TargetIndex < pathPoints.Length - 1)
+                    bloon.TargetIndex = bloon.TargetIndex++;
+                break;
+
             case PatrolType.ClockWise:
-                bloons[index].TargetIndex = (bloons[index].TargetIndex + 1) % pathPoints.Length;
+                bloon.TargetIndex = (bloon.TargetIndex + 1) % pathPoints.Length;
                 break;
 
             case PatrolType.CounterClockwise:
-                bloons[index].TargetIndex = (bloons[index].TargetIndex - 1 + pathPoints.Length) % pathPoints.Length;
+                bloon.TargetIndex = (bloon.TargetIndex - 1 + pathPoints.Length) % pathPoints.Length;
                 break;
 
             default:
                 Debug.Log("Error!");
                 break;
-
         }
     }
 
