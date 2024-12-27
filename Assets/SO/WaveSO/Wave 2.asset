@@ -12,11 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fec9756a8b5d3144582df450a77664a3, type: 3}
   m_Name: Wave 2
   m_EditorClassIdentifier: 
-  waveDatas:
-  - type: {fileID: 6045396046411445925, guid: 6614cc11a43646c4eaa06b4c6e0cba52, type: 3}
-    quantity: 10
-    spawnDelay: 0.5
-    index: 0
-    time: 0
-    started: 0
-    finished: 0
+  MicroWave:
+  - Type: {fileID: 6045396046411445925, guid: 6614cc11a43646c4eaa06b4c6e0cba52, type: 3}
+    Quantity: 5
+    SpawnDelay: 0.5

@@ -1,22 +1,30 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Data", menuName = "ScriptableObjects/WaveSO", order = 1)]
 public class WaveSO : ScriptableObject
 {
-    public List<WaveData> waveDatas = new List<WaveData>();
+    public List<MicroWaveData> MicroWave;
+    public List<BloonData> BloonDatas { get; private set; }
+
+    public void InitializeBloonData()
+    {
+        BloonDatas = new List<BloonData>();
+        foreach (var waveData in MicroWave)
+        {
+            BloonData newData = new BloonData(waveData.Quantity, waveData.SpawnDelay);
+            BloonDatas.Add(newData);
+        }
+    }
+
+    public bool AllWavesFinished() => BloonDatas.TrueForAll(bloon => bloon.Finished);
 }
 
+// WaveData.cs
 [System.Serializable]
-public struct WaveData
+public struct MicroWaveData
 {
-    public Bloon type;
-    [Range(0,100)]public int quantity;
-    [Range(0, 3)]public float spawnDelay;
-
-    [HideInInspector] public int index;
-    [HideInInspector] public int time;
-    [HideInInspector] public bool started;
-    [HideInInspector] public bool  finished;
+    public Bloon Type;
+    [Range(0, 100)] public int Quantity;
+    [Range(0, 3)] public float SpawnDelay;
 }

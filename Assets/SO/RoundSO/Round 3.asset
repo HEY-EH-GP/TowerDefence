@@ -12,6 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea65cdbcd3c0e804393046c3a9c9d94b, type: 3}
   m_Name: Round 3
   m_EditorClassIdentifier: 
-  waves:
-  - {fileID: 11400000, guid: 6df96e0e27aa4874393f37d6e02833c8, type: 2}
-  - {fileID: 11400000, guid: 76f5e0b65e56e6341a96ec2f6fad95b1, type: 2}
+  Waves:
+  - {fileID: 11400000, guid: 6344b99bfa24773419459798d599295f, type: 2}
