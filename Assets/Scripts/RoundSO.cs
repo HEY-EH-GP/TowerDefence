@@ -19,13 +19,14 @@ public class RoundSO : ScriptableObject
             wave.InitializeBloonData();
         }
     }
-    
+
     public void MoveToNextWave()
     {
         if (GetCurrentWave()?.AllWavesFinished() == true && _currentWaveIndex < Waves.Count - 1)
+        {
             _currentWaveIndex++;
+        }
     }
 
     public bool WavesEnded() => Waves.TrueForAll(wave => wave.AllWavesFinished());
-
 }

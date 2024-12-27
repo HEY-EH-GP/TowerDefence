@@ -20,7 +20,20 @@ public class WaveSO : ScriptableObject
     public bool AllWavesFinished() => BloonDatas.TrueForAll(bloon => bloon.Finished);
 }
 
-// WaveData.cs
+public class BloonData
+{
+    public int BloonsToSpawn { get; set; }
+    public float Time { get; set; }
+    public bool Finished { get; set; }
+
+    public BloonData(int bloonsToSpawn, float time)
+    {
+        BloonsToSpawn = bloonsToSpawn;
+        Time = time;
+        Finished = false;
+    }
+}
+
 [System.Serializable]
 public struct MicroWaveData
 {

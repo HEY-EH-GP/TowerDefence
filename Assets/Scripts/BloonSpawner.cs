@@ -1,79 +1,76 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BloonData
-{
-    public int BloonsToSpawn { get; set; }
-    public float Time { get; set; }
-    public bool Finished { get; set; }
-
-    public BloonData(int bloonsToSpawn, float time)
-    {
-        BloonsToSpawn = bloonsToSpawn;
-        Time = time;
-        Finished = false;
-    }
-}
-
 public class BloonSpawner : MonoBehaviour
 {
+    [Header("Rounds Configuration")]
     public List<RoundSO> Rounds;
 
-    private int _currentRoundIndex;
+    private int _currentRoundIndex = 0;
     private Transform _spawnPoint;
 
     private void Awake()
     {
-        _currentRoundIndex = 0;
         _spawnPoint = BloonPathManager.Instance.pathPoints[0];
         InitializeCurrentRound();
     }
 
-    private void FixedUpdate()
+    private void Start()
     {
-        SpawnWaves();
+        StartCoroutine(SpawnRoutine());
     }
 
     private void InitializeCurrentRound()
     {
         if (IsValidRoundIndex(_currentRoundIndex))
         {
-            Rounds[_currentRoundIndex].ResetWaveIndex();
-            Rounds[_currentRoundIndex].InitializeAllWaves();
+            var currentRound = Rounds[_currentRoundIndex];
+            currentRound.ResetWaveIndex();
+            currentRound.InitializeAllWaves();
         }
     }
 
     private bool IsValidRoundIndex(int index) => index >= 0 && index < Rounds.Count;
 
-    private void SpawnWaves()
+    private IEnumerator SpawnRoutine()
     {
-        if (!IsValidRoundIndex(_currentRoundIndex)) return;
-
-        var currentWave = Rounds[_currentRoundIndex].GetCurrentWave();
-        
-        foreach (var bloonData in currentWave.BloonDatas)
+        while (true)
         {
-            if (bloonData.BloonsToSpawn <= 0) bloonData.Finished = true;
-            
-            if (bloonData.Finished) continue;
+            if (!IsValidRoundIndex(_currentRoundIndex)) yield break;
 
-            bloonData.Time -= Time.deltaTime;
+            var currentRound = Rounds[_currentRoundIndex];
+            var currentWave = currentRound.GetCurrentWave();
 
-            if (bloonData.Time <= 0)
+            if (currentWave != null)
             {
-                InstantiateBloon(bloonData, currentWave.MicroWave[currentWave.BloonDatas.IndexOf(bloonData)]);
-            }
-        }
+                foreach (var bloonData in currentWave.BloonDatas)
+                {
+                    if (bloonData.Finished) continue;
 
-        if (currentWave.AllWavesFinished())
-        {
-            Rounds[_currentRoundIndex].MoveToNextWave();
-        }
-        
-        if (Rounds[_currentRoundIndex].WavesEnded() && BloonPathManager.Instance.ReturnBloonCount() <= 0)
-        {
-            _currentRoundIndex++;
-            InitializeCurrentRound();
+                    if (bloonData.Time <= 0)
+                    {
+                        InstantiateBloon(bloonData, currentWave.MicroWave[currentWave.BloonDatas.IndexOf(bloonData)]);
+                    }
+                    else
+                    {
+                        bloonData.Time -= Time.deltaTime;
+                    }
+                }
+
+                if (currentWave.AllWavesFinished())
+                {
+                    currentRound.MoveToNextWave();
+                }
+            }
+
+            if (currentRound.WavesEnded() && BloonPathManager.Instance.ReturnBloonCount() <= 0)
+            {
+                _currentRoundIndex++;
+                InitializeCurrentRound();
+            }
+
+            yield return null;
         }
     }
 
@@ -83,5 +80,7 @@ public class BloonSpawner : MonoBehaviour
         bloonData.BloonsToSpawn--;
         BloonPathManager.Instance.AddBloon(newBloon);
         bloonData.Time = microWaveData.SpawnDelay;
+
+        if (bloonData.BloonsToSpawn <= 0) bloonData.Finished = true;
     }
 }
