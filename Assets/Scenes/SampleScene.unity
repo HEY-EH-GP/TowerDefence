@@ -1555,6 +1555,7 @@ MonoBehaviour:
   - {fileID: 1966421582}
   - {fileID: 1253915576}
   - {fileID: 1936954743}
+  bloons: []
 --- !u!4 &1349685120
 Transform:
   m_ObjectHideFlags: 0
@@ -2532,12 +2533,8 @@ PrefabInstance:
       value: Turret
       objectReference: {fileID: 0}
     - target: {fileID: 8141560848067061029, guid: 5c4023456c0d08147bdb575a1adbb5a2, type: 3}
-      propertyPath: m_RootOrder
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 8141560848067061029, guid: 5c4023456c0d08147bdb575a1adbb5a2, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.73
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8141560848067061029, guid: 5c4023456c0d08147bdb575a1adbb5a2, type: 3}
       propertyPath: m_LocalPosition.y
@@ -2545,7 +2542,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8141560848067061029, guid: 5c4023456c0d08147bdb575a1adbb5a2, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -2.63
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8141560848067061029, guid: 5c4023456c0d08147bdb575a1adbb5a2, type: 3}
       propertyPath: m_LocalRotation.w
@@ -2578,8 +2575,32 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8141560848067061024, guid: 5c4023456c0d08147bdb575a1adbb5a2, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8141560849401650027}
   m_SourcePrefab: {fileID: 100100000, guid: 5c4023456c0d08147bdb575a1adbb5a2, type: 3}
+--- !u!1 &8141560849401650026 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8141560848067061024, guid: 5c4023456c0d08147bdb575a1adbb5a2, type: 3}
+  m_PrefabInstance: {fileID: 8141560849401650025}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8141560849401650027
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8141560849401650026}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 378821c8c17523c4281b14b04443fc8f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  range: 5
+  fireRate: 1
+  projectilePrefab: {fileID: 0}
+  firePoint: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

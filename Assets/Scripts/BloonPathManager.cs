@@ -19,8 +19,8 @@ public class BloonPathManager : MonoBehaviour
     public PatrolType patrolType;
     public Transform[] pathPoints;
 
-    
-    private List<Bloon> bloons = new List<Bloon>();
+    [HideInInspector]
+    public List<Bloon> bloons = new List<Bloon>();
 
 
     private void Awake()
@@ -36,16 +36,6 @@ public class BloonPathManager : MonoBehaviour
     private void FixedUpdate()
     {
         HandleBloons();
-    }
-
-    public void AddBloon(Bloon bloon)
-    {
-        bloons.Add(bloon);
-    }
-
-    public int ReturnBloonCount()
-    {
-        return bloons.Count;
     }
     
     private void HandleBloons()
@@ -66,9 +56,9 @@ public class BloonPathManager : MonoBehaviour
             }
 
             // Check if the bloon is close to its target
-            if (Vector3.Distance(pathPoints[bloon.TargetIndex].position, bloon.GetPosition()) < 0.5f)
+            if (Vector3.Distance(pathPoints[bloon.targetIndex].position, bloon.GetPosition()) < 0.5f)
             {
-                if (bloon.TargetIndex == pathPoints.Length - 1)
+                if (bloon.targetIndex == pathPoints.Length - 1)
                 {
                     // Reached the final target, deactivate and remove
                     bloon.gameObject.SetActive(false);
@@ -89,7 +79,7 @@ public class BloonPathManager : MonoBehaviour
     private void MoveTowardsTarget(Bloon bloon)
     {
         // move towards target
-        Vector3 newPosition = Vector3.MoveTowards(bloon.GetPosition(), pathPoints[bloon.TargetIndex].position, bloon.speed * Time.deltaTime);
+        Vector3 newPosition = Vector3.MoveTowards(bloon.GetPosition(), pathPoints[bloon.targetIndex].position, bloon.speed * Time.deltaTime);
         bloon.SetPosition(newPosition);
     }
 
@@ -99,16 +89,16 @@ public class BloonPathManager : MonoBehaviour
         switch (patrolType)
         {
             case PatrolType.StartToEnd:
-                if(bloon.TargetIndex < pathPoints.Length - 1)
-                    bloon.TargetIndex++;
+                if(bloon.targetIndex < pathPoints.Length - 1)
+                    bloon.targetIndex++;
                 break;
 
             case PatrolType.ClockWise:
-                bloon.TargetIndex = (bloon.TargetIndex + 1) % pathPoints.Length;
+                bloon.targetIndex = (bloon.targetIndex + 1) % pathPoints.Length;
                 break;
 
             case PatrolType.CounterClockwise:
-                bloon.TargetIndex = (bloon.TargetIndex - 1 + pathPoints.Length) % pathPoints.Length;
+                bloon.targetIndex = (bloon.targetIndex - 1 + pathPoints.Length) % pathPoints.Length;
                 break;
 
             default:

@@ -64,7 +64,7 @@ public class BloonSpawner : MonoBehaviour
                 }
             }
 
-            if (currentRound.WavesEnded() && BloonPathManager.Instance.ReturnBloonCount() <= 0)
+            if (currentRound.WavesEnded() && BloonPathManager.Instance.bloons.Count <= 0)
             {
                 _currentRoundIndex++;
                 InitializeCurrentRound();
@@ -78,7 +78,7 @@ public class BloonSpawner : MonoBehaviour
     {
         var newBloon = Instantiate(microWaveData.Type, _spawnPoint.position, Quaternion.identity);
         bloonData.BloonsToSpawn--;
-        BloonPathManager.Instance.AddBloon(newBloon);
+        BloonPathManager.Instance.bloons.Add(newBloon);
         bloonData.Time = microWaveData.SpawnDelay;
 
         if (bloonData.BloonsToSpawn <= 0) bloonData.Finished = true;
