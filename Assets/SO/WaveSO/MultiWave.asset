@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: MultiWave
   m_EditorClassIdentifier: 
   MicroWave:
-  - Type: {fileID: 6045396046411445925, guid: 38c1c41a41c20f347bd0bca245bfe5c2, type: 3}
+  - Type: {fileID: 7411680730227332468, guid: 38c1c41a41c20f347bd0bca245bfe5c2, type: 3}
     Quantity: 5
     SpawnDelay: 0.2
   - Type: {fileID: 6045396046411445925, guid: 226a08da89483f146bcf44d8b064b41e, type: 3}
