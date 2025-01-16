@@ -10,5 +10,10 @@ public class TurretUpgradeSO : ScriptableObject
     public string description;
     public int cost;
 
-    public EntityProjectile projectile; 
+    public GameObject shootBehaviourPrefab;
+    public Sprite sprite;
+
+    public float damage;
+    public float range;
+    public float fireRate;
 }

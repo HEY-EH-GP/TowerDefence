@@ -19,7 +19,7 @@ public class Bloon : MonoBehaviour
     public Vector3 GetPosition(){ return gameObject.transform.position; }
     public void SetPosition(Vector3 newPosition){ transform.position = newPosition; }
 
-    public List<TurretTarget> turretCalls = new List<TurretTarget>();
+    //public List<TurretTarget> turretCalls = new List<TurretTarget>();
     public void TakeDamage(float value)
     {
         health -= value;
@@ -28,8 +28,8 @@ public class Bloon : MonoBehaviour
         if (health <= 0)
         {
             Destroy(this.gameObject); // return to bloon pool 
-            foreach(TurretTarget turret in turretCalls)
-                turret.bloonsInArea.Remove(this);
+            //foreach(TurretTarget turret in turretCalls)
+            //    turret.bloonsInArea.Remove(this);
         }
     }
 
