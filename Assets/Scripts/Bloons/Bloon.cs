@@ -8,7 +8,7 @@ public class Bloon : MonoBehaviour
     public float health;
 
     [Tooltip("Set the speed of the bloon equal to the health multiplied to the speedMultiplier")]
-    public float speedMultiplier;
+    public float speedMultiplier = 2;
     
     [HideInInspector]
     public int targetIndex = 0;
@@ -23,7 +23,7 @@ public class Bloon : MonoBehaviour
     public void TakeDamage(float value)
     {
         health -= value;
-        speed = health * 2;
+        speed = health * speedMultiplier;
 
         if (health <= 0)
         {
