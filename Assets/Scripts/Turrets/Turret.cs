@@ -8,7 +8,7 @@ using UnityEngine;
 public class Turret : MonoBehaviour
 {
     //Public
-    public TurretUpgradeSO currentUpgrade;
+    public TurretUpgradeSO baseUpgrade;
     public MeshRenderer meshRenderer;
 
     //Private
@@ -18,7 +18,7 @@ public class Turret : MonoBehaviour
 
     protected virtual void Awake()
     {
-        ApplyUpgrade(currentUpgrade);
+        ApplyUpgrade(baseUpgrade);
     }
 
     protected virtual void Update()
@@ -39,11 +39,11 @@ public class Turret : MonoBehaviour
 
     public void ApplyUpgrade(TurretUpgradeSO newTurretUpgrade)
     {
-        currentUpgrade = newTurretUpgrade;
+        baseUpgrade = newTurretUpgrade;
 
-        shootBehaviour = Instantiate(currentUpgrade.shootBehaviourPrefab).GetComponent<IShootBehaviour>();
+        //shootBehaviour = Instantiate(baseUpgrade.shootBehaviourPrefab).GetComponent<IShootBehaviour>();
 
-        UpdateTurretAppearence(currentUpgrade.sprite);
+        //UpdateTurretAppearence(baseUpgrade.sprite);
     }
 
     private void UpdateTurretAppearence(Sprite sprite)
