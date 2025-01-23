@@ -1,3 +1,4 @@
+//using System;
 
 public enum TargetType
 {
@@ -19,3 +20,21 @@ public enum UpgradePath
     PathA,
     PathB
 }
+
+public enum AIStates
+{
+    None,
+    SearchFlag,
+    AttackFlag,
+    AttackPlayer,
+    Dead,
+}
+
+//[Flags]
+//public enum AIStates
+//{
+//    None = 0,
+//    AttackFlag = 1 << 0,
+//    AttackPlayer = 1 << 1,
+//    Dead = 1 << 2,
+//}
