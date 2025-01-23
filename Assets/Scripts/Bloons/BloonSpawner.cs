@@ -12,12 +12,12 @@ public class BloonSpawner : MonoBehaviour
 
     private void Awake()
     {
-        _spawnPoint = BloonPathManager.Instance.pathPoints[0];
         InitializeCurrentRound();
     }
 
     private void Start()
     {
+        _spawnPoint = BloonPathManager.Instance.pathPoints[0];
         StartCoroutine(SpawnRoutine());
     }
 
